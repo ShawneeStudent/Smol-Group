@@ -1,4 +1,5 @@
 class Map:
+    """Map Manager class"""
     def __init__(self):
         pass
 
