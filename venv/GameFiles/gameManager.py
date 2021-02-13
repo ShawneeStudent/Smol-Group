@@ -6,7 +6,7 @@ from map import Map
 class GameManager:
     """Game Manager"""
     def __init__(self):
-        """Game global variables"""
+
         # -- INITIALIZATION --
         pygame.init()
 
@@ -46,40 +46,34 @@ class GameManager:
         self.map = Map()
         # camera class instance
 
-        # -- EVENT --
-        self.event = pygame.event.poll()
-
         # -- GAME LOOP --
-        self.run = True
-
-    def game_loop(self):
-        """Game Loop"""
         self.run = True
         while self.run:
 
-            # -- UPDATES --
+            # - UPDATES
             # Time in seconds since the last update
             self.delta_time = self.g_clock.tick(100) / 1000
 
-            # -- USER INPUT --
-            # event
-            if self.event.type == pygame.QUIT:
+            # - USER INPUT
+            # event handling
+            self.evt = pygame.event.poll()
+            if self.evt.type == pygame.QUIT:
                 self.run = False
-            if self.event.type == pygame.KEYDOWN:
-                if self.event.key == pygame.K_ESCAPE:
+            elif self.evt.type == pygame.KEYDOWN:
+                if self.evt.key == pygame.K_ESCAPE:
                     self.run = False
 
-            # -- DRAW --
+            # - DRAW
             # screen
             self.screen.blit(self.background, (0, 0))
             # game objects
 
             # text
 
-            # -- UPDATE DISPLAY --
+            # - UPDATE DISPLAY
             pygame.display.flip()
 
-        # -- EXIT --
+        # -- EXIT GAME --
         pygame.quit()
 
     def draw_texts(self, text, size, x, y):
@@ -89,7 +83,3 @@ class GameManager:
         text_rect = text_surf.get_rect()
         text_rect.center = (x, y)
         self.screen.blit(text_surf, text_rect)
-
-
-
-

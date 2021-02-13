@@ -8,8 +8,7 @@ from gameManager import GameManager
 
 
 def main():
-    gm = GameManager()
-    gm.game_loop()
+    GameManager()
 
 
 if __name__ == '__main__':
