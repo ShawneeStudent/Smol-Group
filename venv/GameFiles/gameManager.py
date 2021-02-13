@@ -23,7 +23,7 @@ class GameManager:
         self.scr_w = 1024
         self.scr_h = 768
         self.screen = pygame.display.set_mode((self.scr_w, self.scr_h))
-        pygame.display.set_caption("Smol Game / Lab 5 / ETGG1802 / Prof: Jason / Team: Lane - Tanim - Evan] | FPS: "
+        pygame.display.set_caption("Smol Game / Lab 5 / ETGG1802 / Prof: Jason / Team: Lane - Tanim - Evan | FPS: "
                                    + str(int(self.g_clock.get_fps())))
         # background
         self.background = pygame.Surface(self.screen.get_size())
