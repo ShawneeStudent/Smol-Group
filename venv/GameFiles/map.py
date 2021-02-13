@@ -1,8 +1,7 @@
 class Map:
-    """Map Manager class"""
+    """ Map Manager"""
     def __init__(self):
         pass
-
 
     def render(self):
         pass
