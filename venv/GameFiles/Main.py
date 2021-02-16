@@ -9,7 +9,8 @@ screen = pygame.display.set_mode((win_width, win_height))
 clock = pygame.time.Clock()
 font = pygame.font.SysFont("Courier New", 16)
 done = False
-
+player = pygame.image.load("Sprites\\32x32-bat-sprite.png")
+enemy = pygame.image.load("Sprites\\Asteroid Brown.png")
 while not done:
     # Update
     dt = clock.tick() / 1000.0
