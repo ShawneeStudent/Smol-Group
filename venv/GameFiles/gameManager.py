@@ -66,6 +66,7 @@ class GameManager:
             # - DRAW
             # screen
             self.screen.blit(self.background, (0, 0))
+            self.map.render(self.background, (0,0), self.scr_w, self.scr_h)
             # game objects
 
             # text
