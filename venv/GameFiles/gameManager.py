@@ -43,7 +43,7 @@ class GameManager:
         # enemy class instance
 
         # map class instance
-        self.map = Map()
+        self.map = Map("sample_map.tmx")
         # camera class instance
 
         # -- GAME LOOP --
