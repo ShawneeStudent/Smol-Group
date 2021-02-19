@@ -5,11 +5,11 @@
 """
 
 from gameManager import GameManager
-from map import Map
 
 
 def main():
     GameManager()
+
 
 if __name__ == '__main__':
     main()
