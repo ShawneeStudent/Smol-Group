@@ -1,6 +1,10 @@
 import pygame
+
+import camera
 from characters import Characters
+from player import Player
 from map import Map
+from camera import Camera
 
 
 class GameManager:
@@ -39,12 +43,13 @@ class GameManager:
         # character class instance
         self.characters = Characters()
         # player class instance
-
+        self.player = Player()
         # enemy class instance
 
         # map class instance
         self.map = Map("sample_map.tmx")
         # camera class instance
+        self.camera = Camera(self.scr_w, self.scr_h, self)
 
         # -- GAME LOOP --
         self.run = True
@@ -70,6 +75,9 @@ class GameManager:
             # game objects
 
             # text
+
+            # camera
+            # self.camera.update(self.player)
 
             # - UPDATE DISPLAY
             pygame.display.flip()
