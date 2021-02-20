@@ -4,12 +4,18 @@ import pygame
 class Camera:
     """Camera that follows player inside map_obj [Non-Vector Version]"""
     def __init__(self, width, height, gameManager):
+        # -- CLASS INSTANCES --
         # gameManager class instance
         self.game_manager = gameManager
-        # camera size
+
+        # -- CAMERA SETUP --
+        # size
         self.cam_w = width
         self.cam_h = height
-        # camera rect
+        # (x, y) coordinates
+        self.x = 0
+        self.y = 0
+        # rect
         self.camera = pygame.Rect(0, 0, self.cam_w, self.cam_h)
 
     def draw_movement(self, map_obj):
@@ -18,19 +24,19 @@ class Camera:
 
     def update(self, target):
         # coordinates, in (reverse directional) relation to the offset
-        x = -target.rect.x + int(self.game_manager.scr_w / 2)
-        y = -target.rect.y + int(self.game_manager.scr_h / 2)
+        self.x = -target.rect.x + int(self.game_manager.scr_w / 2)
+        self.y = -target.rect.y + int(self.game_manager.scr_h / 2)
 
         # -- CAM SCROLL BOUNDARY/BORDER --
         # camera scrolling limit => map_obj size
         # left
-        x = min(0, x)
+        self.x = min(0, self.x)
         # right
-        x = max(-(self.cam_w - self.game_manager.scr_w), x)
+        self.x = max(-(self.cam_w - self.game_manager.scr_w), self.x)
         # top
-        y = min(0, y)
+        self.y = min(0, self.y)
         # bottom
-        y = max(-(self.cam_h - self.game_manager.scr_h), y)
+        self.y = max(-(self.cam_h - self.game_manager.scr_h), self.y)
 
         # updated camera rect
-        self.camera = pygame.Rect(x, y, self.cam_w, self.cam_h)
+        self.camera = pygame.Rect(self.x, self.y, self.cam_w, self.cam_h)
