@@ -2,21 +2,49 @@ import pygame
 
 
 class Characters:
-    def __init__(self, x, y, world_x, world_y, speed, spritesize, cur_frame=0, cur_direct=0):
-        self.x = x
-        self.y = y
-        self.wx = world_x
-        self.wy = world_y
+    def __init__(self, x, y, screen_x, screen_y, speed, spritesize, img, cur_frame=0, cur_direct=0):
+        self.sx = screen_x
+        self.sy = screen_y
         self.speed = speed
         self.sprite = spritesize
         self.frame = cur_frame
         self.direct = cur_direct
+        self.x = x
+        self.y = y
+        self.img = img
 
-    def draw(self, surf, img):
-        surf.blit(img, (int(self.x), int(self.y)), (int(self.frame * self.sprite), int(self.direct * self.sprite),
+    def draw(self, surf, world_width, world_height):
+
+
+        position = self.convert_world_position_to_screen(self.x, self.y)
+
+        surf.blit(self.img, (position), (int(self.frame * self.sprite), int(self.direct * self.sprite),
                                                     self.sprite, self.sprite))
 
+        if self.x <= 0:
+            self.x = 1
+        if self.y <= 0:
+            self.y = 0
+        if self.x >= world_width:
+            self.x = world_width
+        if self.y >= world_height:
+            self.y = world_height
 
+    def convert_screen_position_to_world(self, x, y, to_int = True):
+        world_x = x + 10
+        world_y = y + 10
+        if to_int:
+            world_x = int(world_x)
+            world_y = int(world_y)
+        return (world_x, world_y)
+
+    def convert_world_position_to_screen(self, x, y, to_int = True):
+        screen_x = x - 10
+        screen_y = y - 10
+        if to_int:
+            screen_x = int(screen_x)
+            screen_y = int(screen_y)
+        return (screen_x, screen_y)
 
 
 
@@ -25,13 +53,14 @@ class Characters:
 
 class Player(Characters):
 
-    def __init__(self, x, y, world_x, world_y, speed, spritesize, cur_frame, cur_direct):
+    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct):
 
 
-        super().__init__(x, y, world_x, world_y, speed, spritesize, cur_frame, cur_direct)
+        super().__init__(x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct)
         self.timer = 1
-    def draw(self, surf, img):
-        super().draw(surf, img)
+
+    def draw(self, surf, world_w, world_h):
+        super().draw(surf, world_w, world_h)
 
     def update(self, dt):
         frame_delay = 1
@@ -61,16 +90,17 @@ class Player(Characters):
 
 class Enemy(Characters):
 
-    def __init__(self, x, y, world_x, world_y, speed, spritesize, cur_frame, cur_direct):
+    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct):
 
 
-        super().__init__(x, y, world_x, world_y, speed, spritesize, cur_frame, cur_direct)
+        super().__init__(x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct)
         self.timer_left = 15
         self.timer_right = 15
         self.velocity = [0, 0]
         self.is_in_range = False
-    def draw(self, surf, img):
-        super().draw(surf, img)
+
+    def draw(self, surf, world_w, world_h):
+        super().draw(surf, world_w, world_h)
 
     def update(self, dt):
         if not self.is_in_range:
@@ -85,22 +115,34 @@ class Enemy(Characters):
                 self.x += 10 * dt
 
                 self.timer_right -= 1 * dt
-        if self.y - (self.sprite / 2) < 1:
-            self.y = 1 + (self.sprite / 2)
+
 
 
         if self.timer_right <= 0:
             self.timer_left = 15
 
-    def hit_detection(self, x, y):
-        d = enemy.distance(self.x, self.y, x, y)
-        if d <= 400:
+    def hit_detection(self, x, y, other_sprite):
+        x2 = x - other_sprite / 2
+        y2 = y - other_sprite / 2
+        d = enemy.distance(int(self.x + (self.sprite / 2)), int(self.y + (self.sprite / 2)), x2, y2)
+        if d <= 400 and d > 300:
 
             self.is_in_range = True
             offset = enemy.get_direction_towards(x, y)
             self.x += (offset[0] * dt) * self.speed
             self.y += (offset[1] * dt) * self.speed
+        elif d < 300:
 
+
+            if x2 > int(self.x + (self.sprite / 2)):
+                self.x += self.speed * dt
+            if x2 < int(self.x + (self.sprite / 2)):
+                self.x -= self.speed * dt
+            if y2 > int(self.y + (self.sprite / 2)):
+
+                self.y += self.speed * dt
+            if y2 < int(self.y + (self.sprite / 2)):
+                self.y -= self.speed * dt
 
         else:
             self.is_in_range = False
