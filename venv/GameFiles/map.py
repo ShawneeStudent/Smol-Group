@@ -45,7 +45,7 @@ class Map:
                     self.mTileCodes.append(["layer_num", child.attrib["id"]])
                     idx = 0
                     tmp_array = []
-                    columns = int(self.mMapWidth)
+                    columns = self.mMapWidth
                     for grandchild in child:  # tile number and render order
                         tiledata = grandchild.text
                         tiledata = tiledata.split(",")
@@ -81,8 +81,11 @@ class Map:
             for j in range(winWidthInTiles):
 
                 # find tile pos in world space (check)
+
                 # convert world space to screen space
+
                 # blit to screen
+
                 pass
 
 #   left to right first then go down one row until complete
