@@ -1,7 +1,7 @@
 import xml.etree.ElementTree as ET
 import re
 import math
-
+import pygame
 
 class Map:
     """ Map Manager"""
@@ -35,8 +35,8 @@ class Map:
                 if child.tag == "tileset":
                     self.mNumTileColumns = int(child.attrib["columns"])
                     tilecount = int(child.attrib["tilecount"])
-                    self.mTileOffsetX = int(child.attrib["spacing"])
-                    self.mTileOffsetY = int(child.attrib["spacing"])
+                    #self.mTileOffsetX = int(child.attrib["spacing"])
+                    #self.mTileOffsetY = int(child.attrib["spacing"])
                     tilesetName = child[0].attrib["source"]
                     self.mTilecount = int(child.attrib["tilecount"])
                     #print(tilesetName)
@@ -83,9 +83,11 @@ class Map:
                 # find tile pos in world space (check)
 
                 # convert world space to screen space
-
+                # camera coords - tile coords = screen space coords for tiles
+                tmpx = cameraWorldPos[0] - cameraTileX
+                tmpy = cameraWorldPos[1] - cameraTileY
                 # blit to screen
-
+                
                 pass
 
 #   left to right first then go down one row until complete

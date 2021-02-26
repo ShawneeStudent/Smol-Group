@@ -47,7 +47,7 @@ class GameManager:
         # enemy class instance
 
         # map class instance
-        self.map = Map("sample_map.tmx")
+        self.map = Map("smol_map.tmx")
         # camera class instance
         self.camera = Camera(self.scr_w, self.scr_h, self)
 
