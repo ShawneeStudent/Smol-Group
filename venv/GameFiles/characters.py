@@ -2,7 +2,7 @@ import pygame
 
 
 class Characters:
-    def __init__(self, x, y, screen_x, screen_y, speed, spritesize, img, cur_frame=0, cur_direct=0):
+    def __init__(self, x, y, screen_x, screen_y, speed, spritesize, img, camerax, cameray, cur_frame=0, cur_direct=0):
         self.sx = screen_x
         self.sy = screen_y
         self.speed = speed
@@ -12,6 +12,8 @@ class Characters:
         self.x = x
         self.y = y
         self.img = img
+        self.camerax = camerax
+        self.camray = cameray
 
     def draw(self, surf, world_width, world_height):
 
@@ -31,16 +33,16 @@ class Characters:
             self.y = world_height
 
     def convert_screen_position_to_world(self, x, y, to_int = True):
-        world_x = x + 10
-        world_y = y + 10
+        world_x = x + self.camerax
+        world_y = y + self.cameray
         if to_int:
             world_x = int(world_x)
             world_y = int(world_y)
         return (world_x, world_y)
 
     def convert_world_position_to_screen(self, x, y, to_int = True):
-        screen_x = x - 10
-        screen_y = y - 10
+        screen_x = x - camerax
+        screen_y = y - cameray
         if to_int:
             screen_x = int(screen_x)
             screen_y = int(screen_y)
@@ -53,10 +55,10 @@ class Characters:
 
 class Player(Characters):
 
-    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct):
+    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, camerax, cameray, cur_frame, cur_direct):
 
 
-        super().__init__(x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct)
+        super().__init__(x, y, world_x, world_y, speed, spritesize, img, camerax, cameray, cur_frame, cur_direct)
         self.timer = 1
 
     def draw(self, surf, world_w, world_h):
@@ -90,10 +92,10 @@ class Player(Characters):
 
 class Enemy(Characters):
 
-    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct):
+    def __init__(self, x, y, world_x, world_y, speed, spritesize, img, camerax, cameray, cur_frame, cur_direct):
 
 
-        super().__init__(x, y, world_x, world_y, speed, spritesize, img, cur_frame, cur_direct)
+        super().__init__(x, y, world_x, world_y, speed, spritesize, img, camerax, cameray, cur_frame, cur_direct)
         self.timer_left = 15
         self.timer_right = 15
         self.velocity = [0, 0]
