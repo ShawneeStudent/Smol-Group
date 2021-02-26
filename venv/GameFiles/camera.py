@@ -40,3 +40,8 @@ class Camera:
 
         # updated camera rect
         self.camera = pygame.Rect(self.x, self.y, self.cam_w, self.cam_h)
+
+    def position(self):
+        """ Camera Position in a tuple """
+        pass
+
