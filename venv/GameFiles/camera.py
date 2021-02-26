@@ -22,10 +22,10 @@ class Camera:
         # camera movement: moved (newly drawn) rect shifted by (0, 0)
         return map_obj.rect.move(self.camera.topleft)
 
-    def update(self, target):
+    def update(self, target, target_w, target_h):
         # coordinates, in (reverse directional) relation to the offset
-        self.x = -target.rect.x + int(self.game_manager.scr_w / 2)
-        self.y = -target.rect.y + int(self.game_manager.scr_h / 2)
+        self.x = (target.x + (target_w / 2)) - int(self.game_manager.scr_w / 2)
+        self.y = (target.y + (target_h / 2)) - int(self.game_manager.scr_h / 2)
 
         # -- CAM SCROLL BOUNDARY/BORDER --
         # camera scrolling limit => map_obj size
