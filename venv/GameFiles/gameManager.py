@@ -43,9 +43,9 @@ class GameManager:
         # character class instance
         self.characters = Characters()
         # player class instance
-        self.player = Player()
+        self.player = Player(300, 300, ((self.scr_w / 2) - 32), ((self.scr_h / 2) - 32), 50, 32, img1, 1)
         # enemy class instance
-
+        self.enemy = Enemy(800, 800, 0, 0, 10, 160)
         # map class instance
         self.map = Map("smol_map.tmx")
         # camera class instance
@@ -58,7 +58,10 @@ class GameManager:
             # - UPDATES
             # Time in seconds since the last update
             self.delta_time = self.g_clock.tick(100) / 1000
-
+            self.enemy.update(self.delta_time)
+            self.player.update(self.delta_time)
+            self.enemy.hit_detection(player.x, player.y, player.sprite)
+            self.player.draw()
             # - USER INPUT
             # event handling
             self.evt = pygame.event.poll()
@@ -77,7 +80,11 @@ class GameManager:
             # text
 
             # camera
+<<<<<<< Updated upstream
             self.camera.update(self.player, self.player.sprite, self.player.sprite)
+=======
+            # self.camera.update(self.player, player.spritesize, player.spritesize)
+>>>>>>> Stashed changes
 
             # - UPDATE DISPLAY
             pygame.display.flip()
