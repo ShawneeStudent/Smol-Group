@@ -77,7 +77,7 @@ class GameManager:
             # text
 
             # camera
-            # self.camera.update(self.player)
+            self.camera.update(self.player, self.player.sprite, self.player.sprite)
 
             # - UPDATE DISPLAY
             pygame.display.flip()
