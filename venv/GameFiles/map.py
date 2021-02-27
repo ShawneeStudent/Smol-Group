@@ -2,7 +2,6 @@ import xml.etree.ElementTree as ET
 import re
 import math
 import pygame
-
 class Map:
     """ Map Manager"""
 
@@ -15,6 +14,8 @@ class Map:
         # self.mMapWidth # in tiles
         # self.mMapHeight
         self.mTileCodes = []
+        self.mTilesheet = pygame.image.load("TMXFiles\\spritesheet_tiles.png")
+        self.mLayerNum = 0
 
         self.parseXMl(mapName)
 
@@ -33,7 +34,7 @@ class Map:
             # find layers
             for child in root:  # <item> under map_obj
                 if child.tag == "tileset":
-                    self.mNumTileColumns = int(child.attrib["columns"])
+                    self.mNumTileColumns = 26 #had to set this by hand because the tmx is wrong
                     tilecount = int(child.attrib["tilecount"])
                     #self.mTileOffsetX = int(child.attrib["spacing"])
                     #self.mTileOffsetY = int(child.attrib["spacing"])
@@ -42,12 +43,14 @@ class Map:
                     #print(tilesetName)
 
                 else:  # if not <tileset> then we are <layer>
-                    self.mTileCodes.append(["layer_num", child.attrib["id"]])
+                    self.mLayerNum += 1
+                    self.mTileCodes.append([child.attrib["name"]])
                     idx = 0
                     tmp_array = []
                     columns = self.mMapWidth
                     for grandchild in child:  # tile number and render order
                         tiledata = grandchild.text
+                        #print(tiledata)
                         tiledata = tiledata.split(",")
                         tmp_arr = []
                         for sub in tiledata:  # doing black magic to remove newline characters
@@ -61,7 +64,7 @@ class Map:
                             #idx += 1
                         self.mTileCodes.append(tmp_array)
                         tmp_array = []
-            # print(self.mTileCodes)
+            #print(self.mTileCodes)
         except FileNotFoundError:
             print("Couldnt open file '", fileName, "'", sep="")
 
@@ -74,22 +77,49 @@ class Map:
 
         cameraTileX = math.floor(cameraWorldPos[0] / self.mTileWidth)
         cameraTileY = math.floor(cameraWorldPos[1] / self.mTileHeight)
+        #print(cameraTileY)
 
         startTileIDX = cameraTileX+cameraTileY
 
-        for i in range(winHeightInTiles):
-            for j in range(winWidthInTiles):
 
-                # find tile pos in world space (check)
+        #print(startTileIDX)
+        for k in range(self.mLayerNum):
+            MoveDown = 0
+            for i in range(winHeightInTiles):
+                for j in range(winWidthInTiles):
+                    #camera coords - tile coords = screen space coords for tiles
+                    #tmpx = cameraWorldPos[0] - cameraTileX + (j * self.mTileWidth)
+                    #tmpy = cameraWorldPos[1] - cameraTileY + (i * self.mTileHeight)
+                    #print(tmpx,",", tmpy)
+                    # blit to screen
 
-                # convert world space to screen space
-                # camera coords - tile coords = screen space coords for tiles
-                tmpx = cameraWorldPos[0] - cameraTileX
-                tmpy = cameraWorldPos[1] - cameraTileY
-                # blit to screen
-                
-                pass
+                    #self.mMapWidth * k gets us to the correct layer idx 0
+                    if k % 2 != 0: # since tilesheet goes [[layer name],[data]....] we do this to make sure we hit the data
+                        CurrentTile = int(self.mTileCodes[k][startTileIDX + j + MoveDown]) # this is correct
+                        print("[][thisone] = " , str(startTileIDX+ j + MoveDown), " tilecode= " , int(self.mTileCodes[k][startTileIDX + j + MoveDown]))
+                        currentTileWorldSpaceX = cameraTileX + (j*self.mTileWidth)
+                        currentTileWorldSpaceY = cameraTileY + (i*self.mTileHeight)
 
+                        # ---------> CODE FOR FINDING CURRENT TILE POSITION IN THE TILESHEET
+                        TilesheetY = int(CurrentTile/26)
+                        TilesheetX = int((CurrentTile/26 - int(CurrentTile/26)) * 26)
+                        #print(TilesheetX, ",",TilesheetY)
+                        TilesheetY_InPixels = TilesheetY*self.mTileHeight
+                        TilesheetX_InPixels = TilesheetX*self.mTileWidth
+                        #print(TilesheetX_InPixels,",",TilesheetY_InPixels)
+                        #<---------- END OF BLOCK
+
+
+                        #print(tmpx," ",tmpy," ",tmp_tilesheetcoord, " ", self.mTileWidth)
+                        surf.blit(self.mTilesheet, (j * self.mTileWidth, i * self.mTileHeight),
+                                  ((TilesheetX_InPixels,
+                                    TilesheetY_InPixels),
+                                    (self.mTileWidth, self.mTileHeight)))
+                MoveDown += self.mMapWidth
+
+
+    def getMapSize(self):
+        return (self.mMapWidth * self.mTileWidth, self.mMapHeight * self.mTileHeight)
 #   left to right first then go down one row until complete
 #   ------------------->
 #   0 0 0 0 0 0 1 4 2 5  |
