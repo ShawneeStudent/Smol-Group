@@ -42,14 +42,15 @@ class GameManager:
         self.font_type = pygame.font.get_default_font()
 
         # -- CLASS INSTANCES --
-        # player class instance
-        self.player = characters.Player(300, 300, ((self.scr_w / 2) - 32), ((self.scr_h / 2) - 32), 50, 32, img1, 1)
-        # enemy class instance
-        self.enemy = characters.Enemy(800, 800, 0, 0, 10, 160, img2)
-        # map class instance
-        self.map = Map("smol_map.tmx")
         # camera class instance
         self.camera = Camera(self.scr_w, self.scr_h, self)
+        # player class instance
+        self.player = characters.Player(300, 300, ((self.scr_w / 2) - 32), ((self.scr_h / 2) - 32), 50, 32, img1, self.camera.x, self.camera.y, 1, 0)
+        # enemy class instance
+        self.enemy = characters.Enemy(800, 800, 0, 0, 10, 160, img2, self.camera.x, self.camera.y, 0, 0)
+        # map class instance
+        self.map = Map("smol_map.tmx")
+
 
         # -- GAME LOOP --
         self.run = True
@@ -85,7 +86,7 @@ class GameManager:
 
             self.camera.update(self.player, self.player.sprite, self.player.sprite)
 
-            self.camera.update(self.player, player.spritesize, player.spritesize)
+
 
 
             # - UPDATE DISPLAY
