@@ -14,10 +14,10 @@ class Characters:
         self.img = img
         self.camx = camera_x
         self.camy = camera_y
-    def draw(self, surf, world_width, world_height):
+    def draw(self, surf, world_width, world_height, camerax, cameray):
 
 
-        position = self.convert_world_position_to_screen(self.x, self.y)
+        position = self.convert_world_position_to_screen(self.x, self.y, camerax, cameray)
 
         surf.blit(self.img, (position), (int(self.frame * self.sprite), int(self.direct * self.sprite),
                                                     self.sprite, self.sprite))
@@ -39,9 +39,9 @@ class Characters:
             world_y = int(world_y)
         return (world_x, world_y)
 
-    def convert_world_position_to_screen(self, x, y, to_int = True):
-        screen_x = x - self.camx
-        screen_y = y - self.camy
+    def convert_world_position_to_screen(self, x, y, camerax, cameray, to_int = True):
+        screen_x = x - camerax
+        screen_y = y - cameray
         if to_int:
             screen_x = int(screen_x)
             screen_y = int(screen_y)
@@ -60,8 +60,8 @@ class Player(Characters):
         super().__init__(x, y, world_x, world_y, speed, spritesize, img, camera_x, camera_y, cur_frame, cur_direct)
         self.timer = 1
 
-    def draw(self, surf, world_w, world_h):
-        super().draw(surf, world_w, world_h)
+    def draw(self, surf, world_w, world_h, camerax, cameray):
+        super().draw(surf, world_w, world_h, camerax, cameray)
 
     def update(self, dt):
         frame_delay = 1
@@ -100,8 +100,8 @@ class Enemy(Characters):
         self.velocity = [0, 0]
         self.is_in_range = False
 
-    def draw(self, surf, world_w, world_h):
-        super().draw(surf, world_w, world_h)
+    def draw(self, surf, world_w, world_h, camerax, cameray):
+        super().draw(surf, world_w, world_h, camerax, cameray)
 
     def update(self, dt):
         if not self.is_in_range:

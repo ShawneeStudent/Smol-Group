@@ -73,8 +73,8 @@ class GameManager:
                     self.run = False
 
             # - DRAW
-            self.player.draw(self.background, self.map.getMapSize()[0], self.map.getMapSize()[1])
-            self.enemy.draw(self.background, self.map.getMapSize()[0], self.map.getMapSize()[1])
+            self.player.draw(self.background, self.map.getMapSize()[0], self.map.getMapSize()[1], self.camera.x, self.camera.y)
+            self.enemy.draw(self.background, self.map.getMapSize()[0], self.map.getMapSize()[1], self.camera.x, self.camera.y)
             # screen
             self.screen.blit(self.background, (0, 0))
             self.map.render(self.background, (0,0), self.scr_w, self.scr_h)
