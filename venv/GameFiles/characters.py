@@ -125,11 +125,11 @@ class Enemy(Characters):
     def hit_detection(self, x, y, other_sprite):
         x2 = x - other_sprite / 2
         y2 = y - other_sprite / 2
-        d = Enemy.distance(int(self.x + (self.sprite / 2)), int(self.y + (self.sprite / 2)), x2, y2)
+        d = self.distance(int(self.x + (self.sprite / 2)), int(self.y + (self.sprite / 2)), x2, y2)
         if d <= 400 and d > 300:
 
             self.is_in_range = True
-            offset = Enemy.get_direction_towards(x, y)
+            offset = self.get_direction_towards(x, y)
             self.x += (offset[0] * dt) * self.speed
             self.y += (offset[1] * dt) * self.speed
         elif d < 300:
