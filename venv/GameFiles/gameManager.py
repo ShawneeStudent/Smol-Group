@@ -61,7 +61,7 @@ class GameManager:
             self.delta_time = self.g_clock.tick(100) / 1000
             self.enemy.update(self.delta_time)
             self.player.update(self.delta_time)
-            self.enemy.hit_detection(self.player.x, self.player.y, self.player.sprite, dt)
+            self.enemy.hit_detection(self.player.x, self.player.y, self.player.sprite, self.delta_time)
 
             # - USER INPUT
             # event handling
