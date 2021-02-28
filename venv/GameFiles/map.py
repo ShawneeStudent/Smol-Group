@@ -14,7 +14,7 @@ class Map:
         # self.mMapWidth # in tiles
         # self.mMapHeight
         self.mTileCodes = []
-        self.mTilesheet = pygame.image.load("TMXFiles\\spritesheet_tiles.png")
+        self.mTilesheet = pygame.image.load("TMXFiles\\tilesheet_complete_2X.png")
         self.mLayerNum = 0
 
         self.parseXMl(mapName)
@@ -96,7 +96,7 @@ class Map:
                     #self.mMapWidth * k gets us to the correct layer idx 0
                     if k % 2 != 0: # since tilesheet goes [[layer name],[data]....] we do this to make sure we hit the data
                         CurrentTile = int(self.mTileCodes[k][startTileIDX + j + MoveDown]) # this is correct
-                        print("[][thisone] = " , str(startTileIDX+ j + MoveDown), " tilecode= " , int(self.mTileCodes[k][startTileIDX + j + MoveDown]))
+                        #print("[][thisone] = " , str(startTileIDX+ j + MoveDown), " tilecode= " , int(self.mTileCodes[k][startTileIDX + j + MoveDown]))
                         currentTileWorldSpaceX = cameraTileX + (j*self.mTileWidth)
                         currentTileWorldSpaceY = cameraTileY + (i*self.mTileHeight)
 
