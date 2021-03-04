@@ -49,7 +49,7 @@ class GameManager:
         # enemy class instance
         self.enemy = characters.Enemy(800, 800, 0, 0, 10, 160, img2, self.camera.x, self.camera.y, 0, 0)
         # map class instance
-        self.map = Map("smol_map.tmx")
+        self.map = Map("smol_map1.tmx")
 
 
         # -- GAME LOOP --
@@ -77,7 +77,7 @@ class GameManager:
             self.enemy.draw(self.background, self.map.getMapSize()[0], self.map.getMapSize()[1], self.camera.x, self.camera.y)
             # screen
             self.screen.blit(self.background, (0, 0))
-            self.map.render(self.background, (0,0), self.scr_w, self.scr_h)
+            self.map.render(self.background, (self.camera.x,self.camera.y), self.scr_w, self.scr_h)
             # game objects
 
             # text

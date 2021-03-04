@@ -14,7 +14,7 @@ class Map:
         # self.mMapWidth # in tiles
         # self.mMapHeight
         self.mTileCodes = []
-        self.mTilesheet = pygame.image.load("TMXFiles\\tilesheet_complete_2X.png")
+        self.mTilesheet = pygame.image.load("TMXFiles\\tilesheet_complete.png")
         self.mLayerNum = 0
 
         self.parseXMl(mapName)
@@ -34,7 +34,7 @@ class Map:
             # find layers
             for child in root:  # <item> under map_obj
                 if child.tag == "tileset":
-                    self.mNumTileColumns = 26 #had to set this by hand because the tmx is wrong
+                    self.mNumTileColumns = int(child.attrib["columns"])
                     tilecount = int(child.attrib["tilecount"])
                     #self.mTileOffsetX = int(child.attrib["spacing"])
                     #self.mTileOffsetY = int(child.attrib["spacing"])
@@ -95,26 +95,29 @@ class Map:
 
                     #self.mMapWidth * k gets us to the correct layer idx 0
                     if k % 2 != 0: # since tilesheet goes [[layer name],[data]....] we do this to make sure we hit the data
+
                         CurrentTile = int(self.mTileCodes[k][startTileIDX + j + MoveDown]) # this is correct
                         #print("[][thisone] = " , str(startTileIDX+ j + MoveDown), " tilecode= " , int(self.mTileCodes[k][startTileIDX + j + MoveDown]))
+
                         currentTileWorldSpaceX = cameraTileX + (j*self.mTileWidth)
                         currentTileWorldSpaceY = cameraTileY + (i*self.mTileHeight)
 
                         # ---------> CODE FOR FINDING CURRENT TILE POSITION IN THE TILESHEET
                         TilesheetY = int(CurrentTile/26)
                         TilesheetX = int((CurrentTile/26 - int(CurrentTile/26)) * 26)
-                        #print(TilesheetX, ",",TilesheetY)
+                        print(TilesheetX, ",",TilesheetY)
                         TilesheetY_InPixels = TilesheetY*self.mTileHeight
                         TilesheetX_InPixels = TilesheetX*self.mTileWidth
                         #print(TilesheetX_InPixels,",",TilesheetY_InPixels)
                         #<---------- END OF BLOCK
 
-
                         #print(tmpx," ",tmpy," ",tmp_tilesheetcoord, " ", self.mTileWidth)
+
                         surf.blit(self.mTilesheet, (j * self.mTileWidth, i * self.mTileHeight),
                                   ((TilesheetX_InPixels,
                                     TilesheetY_InPixels),
                                     (self.mTileWidth, self.mTileHeight)))
+
                 MoveDown += self.mMapWidth
 
 
